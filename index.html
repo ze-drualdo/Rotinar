@@ -97,11 +97,11 @@ h2{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
 .btn.danger{background:transparent;color:var(--danger);border:1px solid var(--line)}
 .btn[disabled]{opacity:.5;cursor:not-allowed}
 
-.tabbar{flex:none;display:grid;grid-template-columns:repeat(5,1fr);background:var(--surface);border-top:1px solid var(--line);padding:8px 4px 8px}
+.tabbar{flex:none;display:grid;grid-template-columns:repeat(5,1fr);background:var(--surface);border-top:1px solid var(--line);padding:8px 4px calc(14px + env(safe-area-inset-bottom,0px))}
 .tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;font-size:12px;font-weight:600;color:var(--muted);border-radius:12px}
 .tab svg{width:28px;height:28px}
 .tab.on{color:var(--brand-strong)}
-.fab{position:absolute;right:16px;bottom:96px;width:54px;height:54px;border-radius:50%;background:var(--brand-strong);color:var(--on-brand);display:grid;place-items:center;box-shadow:var(--shadow)}
+.fab{position:absolute;right:16px;bottom:calc(102px + env(safe-area-inset-bottom,0px));width:54px;height:54px;border-radius:50%;background:var(--brand-strong);color:var(--on-brand);display:grid;place-items:center;box-shadow:var(--shadow)}
 .fab svg{width:26px;height:26px}
 
 .strip{display:grid;grid-template-columns:28px repeat(7,1fr) 28px;gap:4px;align-items:center}
@@ -509,10 +509,8 @@ function vMes(){
   for(var i=0;i<total;i++){
     var x=new Date(y,m,1-off+i),s=ymd(x),out=x.getMonth()!==m,oo=occsOn(s);
     var pills=oo.eventos.concat(oo.atividades.filter(function(z){return !z.start})),shown=pills.slice(0,3),more=pills.length-shown.length;
-    var pend=oo.tarefas.filter(function(z){return !isDone(z)}).length;
     var hol=holidayOn(s),inner=(hol?'<span class="pill hd" title="'+esc(hol.kind)+'"><i></i>'+esc(hol.name)+'</span>':'')+shown.map(function(e){return '<span class="pill" style="--c:'+blockOf(e.item.block).color+'">'+esc(e.item.name)+'</span>'}).join('');
     if(more>0)inner+='<span class="pill more">+'+more+' mais</span>';
-    if(pend>0)inner+='<span class="pill tk">'+IC.check+pend+(pend===1?' tarefa':' tarefas')+'</span>';
     cells+='<button class="cell'+(out?' out':'')+(s===t?' today':'')+(s===selDate?' sel':'')+'" data-act="pickmonth" data-date="'+s+'" aria-label="'+longDate(x)+'"><span class="n">'+x.getDate()+'</span>'+inner+'</button>';
   }
   var head='<div class="top"><div><h1>Mês</h1><p class="sub">'+MES[m]+' de '+y+'</p></div><div class="nav"><button class="iconbtn" data-act="mshift" data-n="-1" aria-label="Mês anterior">'+IC.left+'</button><button class="iconbtn" data-act="mshift" data-n="1" aria-label="Próximo mês">'+IC.right+'</button></div></div>';
